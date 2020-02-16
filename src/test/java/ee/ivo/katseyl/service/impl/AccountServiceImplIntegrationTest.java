@@ -17,6 +17,7 @@ import ee.ivo.katseyl.data.model.Account;
 import ee.ivo.katseyl.data.model.Currency;
 import ee.ivo.katseyl.service.AccountService;
 import ee.ivo.katseyl.service.CurrencyService;
+import ee.ivo.katseyl.service.exception.NonExistentIdException;
 
 @DataJpaTest
 @ExtendWith(SpringExtension.class)
@@ -79,6 +80,9 @@ public class AccountServiceImplIntegrationTest {
 	public void testDeleteAccount() {
 		Long testAccountId = testAccount.getId();
 		accountService.deleteAccount(testAccount);
-		Assertions.assertNull(accountService.getAccountById(testAccountId));
+
+		Assertions.assertThrows(NonExistentIdException.class, () -> {
+			accountService.getAccountById(testAccountId);
+		});
 	}
 }

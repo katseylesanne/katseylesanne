@@ -12,6 +12,7 @@ import ee.ivo.katseyl.data.model.Currency;
 import ee.ivo.katseyl.data.repository.AccountRepository;
 import ee.ivo.katseyl.service.AccountService;
 import ee.ivo.katseyl.service.CurrencyService;
+import ee.ivo.katseyl.service.exception.NonExistentIdException;
 
 @Service
 @Transactional
@@ -36,7 +37,7 @@ public class AccountServiceImpl implements AccountService {
 
 	@Override
 	public Account getAccountById(Long id) {
-		return accountRepository.findById(id).orElse(null);
+		return accountRepository.findById(id).orElseThrow(() -> new NonExistentIdException(id.toString()));
 	}
 
 	@Override
@@ -50,8 +51,27 @@ public class AccountServiceImpl implements AccountService {
 	}
 
 	@Override
+	public Account saveAccount(Account account, Long id) {
+		if (account == null || account.getId() == null || id == null || !account.getId().equals(id)) {
+			throw new IllegalArgumentException("invalid account " + account + " or id " + id);
+		}
+		if (!accountRepository.existsById(id)) {
+			throw new NonExistentIdException("missing id " + id);
+		}
+		return accountRepository.save(account);
+	}
+
+	@Override
 	public List<Account> findAllAccounts() {
 		return accountRepository.findAll();
+	}
+
+	@Override
+	public void deleteAccount(Long id) {
+		if (!accountRepository.existsById(id)) {
+			throw new NonExistentIdException("missing id " + id);
+		}
+		accountRepository.deleteById(id);
 	}
 
 	@Override
