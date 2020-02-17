@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import ee.ivo.katseyl.service.TransactionService;
-import ee.ivo.katseyl.service.impl.TransactionServiceImpl.TransactionResult;
 import ee.ivo.katseyl.web.dto.TransactionDto;
 
 @RestController
@@ -18,8 +17,8 @@ public class TransactionController {
 	private TransactionService transactionService;
 
 	@PostMapping
-	public TransactionResult processTransaction(@RequestBody TransactionDto transactionDto) {
-		return transactionService.processTransaction(transactionDto.getSourceAccountId(),
+	public void processTransaction(@RequestBody TransactionDto transactionDto) {
+		transactionService.processTransaction(transactionDto.getSourceAccountId(),
 				transactionDto.getDestinationAccountId(), transactionDto.getBalance());
 	}
 

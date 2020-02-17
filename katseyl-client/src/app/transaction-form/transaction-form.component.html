@@ -1,0 +1,51 @@
+<div class="card my-5">
+  <div class="card-body">
+    <form (ngSubmit)="onSubmit()" #transactionForm="ngForm">
+
+      <div class="form-group">
+        <label for="sourceAccountId">Source account</label>
+        <select [(ngModel)]="transaction.sourceAccountId"
+          class="form-control"
+          id="sourceAccountId"
+          name="sourceAccountId"
+          #sourceAccountId="ngModel">
+          <option *ngFor="let account of accounts" value={{account.id}}>
+            {{account.accountName}}
+          </option>
+        </select>
+
+        <div [hidden]="!sourceAccountId.invalid" class="alert alert-danger">Source account is required</div>
+      </div>
+
+      <div class="form-group">
+        <label for="destinationAccountId">Destination account</label>
+        <select [(ngModel)]="transaction.destinationAccountId"
+          class="form-control"
+          id="destinationAccountId"
+          name="destinationAccountId"
+          #destinationAccountId="ngModel">
+          <option *ngFor="let account of accounts" value={{account.id}}>
+            {{account.accountName}}
+          </option>
+        </select>
+
+        <div [hidden]="!destinationAccountId.invalid" class="alert alert-danger">Destination account is required</div>
+      </div>
+
+      <div class="form-group">
+        <label for="balance">Balance</label>
+        <input type="number" [(ngModel)]="transaction.balance"
+          class="form-control"
+          id="balance"
+          name="balance"
+          placeholder="Enter transaction balance"
+          required #balance="ngModel">
+
+        <div [hidden]="!(balance.invalid && balance.touched)" class="alert alert-danger">Balance is required</div>
+      </div>
+
+      <button type="submit" [disabled]="!transactionForm.form.valid" 
+        class="btn btn-info">Submit</button>
+    </form>
+  </div>
+</div>

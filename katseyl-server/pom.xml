@@ -11,7 +11,7 @@
 	</parent>
 
 	<groupId>ee.ivo</groupId>
-	<artifactId>katseyl</artifactId>
+	<artifactId>katseyl-server</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 
 	<properties>
